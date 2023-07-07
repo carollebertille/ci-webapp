@@ -5,7 +5,7 @@ pipeline {
        IMAGE_NAME = "helloworld"
        IMAGE_TAG = "v1"  
        CONTAINER_PORT = "8081"
-       DOCKERHUB = credentials('dockerhub')
+       DOCKERHUB_CREDENTIALS = credentials('dockerhub')
        HOST_PORT = "80"
      }
   stages {
@@ -15,7 +15,7 @@ pipeline {
         }
           steps {
              script {
-               sh 'echo $DOCKERHUB | docker login -u $DOCKERHUB_ID --password-stdin'
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
              }
           }
       }

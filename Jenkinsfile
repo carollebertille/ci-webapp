@@ -3,7 +3,7 @@ pipeline {
      label ("node1")
             }
       environment {
-       DOCKERHUB_ID = "carolledevops"
+       DOCKERHUB_ID = "edennolan2021"
        IMAGE_NAME = "helloworld"
        IMAGE_TAG = "v1"  
        CONTAINER_PORT = "8081"
@@ -21,25 +21,25 @@ pipeline {
              }
           }
       }
-      stage('SonarQube analysis') {
-        when {
-          expression { GIT_BRANCH == 'origin/dev' }
-         }
-            agent {
-                docker {
-                  image 'sonarsource/sonar-scanner-cli:4.7.0'
-                }
-               }
-               environment {
-        CI = 'true'
-        scannerHome='/opt/sonar-scanner'
-       }   
-            steps{
-                withSonarQubeEnv('Sonar') {
-                    sh "${scannerHome}/bin/sonar-scanner"
-                }
-            }
-         }
+     # stage('SonarQube analysis') {
+       # when {
+       #   expression { GIT_BRANCH == 'origin/dev' }
+       #  }
+       #     agent {
+        #        docker {
+         #         image 'sonarsource/sonar-scanner-cli:4.7.0'
+         #       }
+         #      }
+         #      environment {
+       # CI = 'true'
+       # scannerHome='/opt/sonar-scanner'
+     #  }   
+       #     steps{
+        #        withSonarQubeEnv('Sonar') {
+               #     sh "${scannerHome}/bin/sonar-scanner"
+               # }
+           # }
+        # }
 
       stage("Build docker images") {
         when {

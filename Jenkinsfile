@@ -13,7 +13,7 @@ pipeline {
   stages {
       stage('login to docker repository') {
        when {
-          expression { GIT_BRANCH == 'origin/dev' }
+          expression { GIT_BRANCH == 'origin/main' }
         }
           steps {
              script {
@@ -23,7 +23,7 @@ pipeline {
       }
      # stage('SonarQube analysis') {
        # when {
-       #   expression { GIT_BRANCH == 'origin/dev' }
+       #   expression { GIT_BRANCH == 'origin/main' }
        #  }
        #     agent {
         #        docker {
@@ -43,17 +43,17 @@ pipeline {
 
       stage("Build docker images") {
         when {
-          expression { GIT_BRANCH == 'origin/dev' }
+          expression { GIT_BRANCH == 'origin/main' }
         }
         steps {
             script {
-               sh ' docker build --no-cache -f code-application/Dockerfile -t ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG ./code-application/ '
+               sh ' docker build -t ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG . '
             }
         }
      }
      stage("scan docker images") {
         when {
-          expression { GIT_BRANCH == 'origin/dev' }
+          expression { GIT_BRANCH == 'origin/main' }
         }
       environment{
           SNYK_TOKEN = credentials('snyktoken')
@@ -69,7 +69,7 @@ pipeline {
     
     stage('Run container based on builded image') {
       when {
-          expression { GIT_BRANCH == 'origin/dev' }
+          expression { GIT_BRANCH == 'origin/main' }
         }
             steps {
                script {
@@ -84,7 +84,7 @@ pipeline {
        }
   stage('Test image') {
       when {
-          expression { GIT_BRANCH == 'origin/dev' }
+          expression { GIT_BRANCH == 'origin/main' }
         }
            steps {
               script {
@@ -96,7 +96,7 @@ pipeline {
       }
     stage('Clean Container') {
           when {
-          expression { GIT_BRANCH == 'origin/dev' }
+          expression { GIT_BRANCH == 'origin/main' }
              }
           steps {
              script {
@@ -109,7 +109,7 @@ pipeline {
      }
     stage('push docker image') {
      when {
-          expression { GIT_BRANCH == 'origin/dev' }
+          expression { GIT_BRANCH == 'origin/main' }
         }
           steps {
              script {

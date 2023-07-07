@@ -40,7 +40,7 @@ pipeline {
        steps{
          sh '''
           echo "starting image scan ..."
-           SCAN_RESULT-$(docker run --rm -e SNYK_TOKEN=$SNYK_TOKEN -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/app snyk/snyk:docker snyk test --docker ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG --json
+           SCAN_RESULT-$(docker run --rm -e SNYK_TOKEN=$SNYK_TOKEN -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/app snyk/snyk:docker snyk test --docker ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG 
             echo"scan ended"
          '''
         }
@@ -55,7 +55,7 @@ pipeline {
                  sh '''
                     echo "cleaning existing container if exist
                     docker ps -a | grep -i $IMAGE_NAME && docker rm -f ${IMAGE_NAME}
-                    docker run --name ${IMAGE_NAME} -d -p ${APP_PORT}:CONTAINER_PORT ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG 
+                    docker run --name ${IMAGE_NAME} -d -p ${APP_PORT}:$CONTAINER_PORT ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG 
                     sleep 5
                  '''
                }

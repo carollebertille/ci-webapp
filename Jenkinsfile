@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-     label ("node1")
-            }
+    agent any 
       environment {
        DOCKERHUB_ID = "edennolan2021"
        IMAGE_NAME = "helloworld"

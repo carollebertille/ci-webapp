@@ -9,12 +9,7 @@ pipeline {
        SYNK = credentials('snyk')
        HOST_PORT = "80"
      }
-  options {
-    buildDiscarder(logRotator(numToKeepStr: '20'))
-    disableConcurrentBuilds()
-    timeout (time: 60, unit: 'MINUTES')
-    timestamps()
-  }
+
   stages {
       stage('login to docker repository') {
        when {

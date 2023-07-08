@@ -32,50 +32,7 @@ pipeline {
             }
         }
      }
-     
-    
-    
-    stage('Run container based on builded image') {
-      when {
-          expression { GIT_BRANCH == 'origin/main' }
-        }
-            steps {
-               script {
-                 sh '''
-                    echo "cleaning existing container if exist"
-                    docker ps -a | grep -i $IMAGE_NAME && docker rm -f ${IMAGE_NAME}
-                    docker run --name ${IMAGE_NAME} -d -p ${APP_PORT}:$CONTAINER_PORT ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG 
-                    sleep 5
-                 '''
-               }
-            }
-       }
-  stage('Test image') {
-      when {
-          expression { GIT_BRANCH == 'origin/main' }
-        }
-           steps {
-              script {
-                sh '''
-                  curl -I -X GET http://localhost:${APP_PORT}/api/status | grep -i "200"
 
-                '''
-              }
-           }
-      }
-    stage('Clean Container') {
-          when {
-          expression { GIT_BRANCH == 'origin/main' }
-             }
-          steps {
-             script {
-               sh '''
-                 docker stop $IMAGE_NAME
-                 docker rm $IMAGE_NAME
-               '''
-             }
-          }
-     }
     stage('push docker image') {
      when {
           expression { GIT_BRANCH == 'origin/main' }

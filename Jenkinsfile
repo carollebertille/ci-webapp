@@ -36,12 +36,12 @@ pipeline {
           expression { GIT_BRANCH == 'origin/main' }
         }
       environment{
-          SNYK_TOKEN = credentials('SNYK')
+          SNYK = credentials('SNYK')
        }
        steps{
          sh '''
           echo "starting image scan ..."
-           docker run --rm -e $SNYK_TOKEN -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/app snyk/snyk:docker snyk test --docker ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG 
+           docker run --rm -e $SNYK -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/app snyk/snyk:docker snyk test --docker ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG 
             echo"scan ended"
          '''
         }

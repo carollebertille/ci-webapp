@@ -48,7 +48,7 @@ pipeline {
           expression { GIT_BRANCH == 'origin/dev' }
             }
             steps {
-                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'gke_credential', namespace: '', serverUrl: '') {
+                withKubeConfig(caCertificate: '', clusterName: 'gke_helloworld-391505_us-west1-a_helloworld-391505-gke', contextName: 'gke_helloworld-391505_us-west1-a_helloworld-391505-gke', credentialsId: 'gke-credential', namespace: 'helloworld', serverUrl: 'https://34.83.83.200') {
                  sh "kubectl apply -f deployment.yml"
                 }
             }
@@ -60,7 +60,7 @@ pipeline {
           expression { GIT_BRANCH == 'origin/main' }
             }
             steps {
-                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'gke_credential', namespace: '', serverUrl: '') {
+                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'gke_credential', namespace: '', serverUrl: 'https://34.83.83.200') {
                  sh "kubectl apply -f deployment.yml"
                 }
             }

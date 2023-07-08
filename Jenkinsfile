@@ -20,22 +20,7 @@ pipeline {
              }
           }
       }
-     stage('SonarQube analysis') {
-            agent {
-                docker {
-                  image 'edennolan2021/sonar-scanner-cli:4.8'
-                }
-               }
-               environment {
-        CI = 'true'
-        scannerHome='/opt/sonar-scanner'
-    	}
-            steps{
-                withSonarQubeEnv('Sonar') {
-                    sh "${scannerHome}/bin/sonar-scanner"
-                }
-            }
-        }
+     
     
       stage("Build docker images") {
         when {

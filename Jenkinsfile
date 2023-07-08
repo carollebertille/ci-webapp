@@ -56,10 +56,10 @@ pipeline {
         }
            steps {
               script {
-                sh '''
-                  curl -I http://localhost | grep -i "200"
+                sh '
+                  curl -I -X GET http://localhost:${APP_PORT}/api/status | grep -i "200"
 
-                '''
+                '
               }
            }
       }

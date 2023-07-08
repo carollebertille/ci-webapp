@@ -56,7 +56,7 @@ pipeline {
            steps {
               script {
                 sh '''
-                    curl -I http://${HOST_IP}:${APP_PORT} | grep -i "200"
+                    curl -I http://localhost:${APP_PORT} | grep -i "200"
                 '''
               }
            }

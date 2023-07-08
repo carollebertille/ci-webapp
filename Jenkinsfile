@@ -36,7 +36,7 @@ pipeline {
           expression { GIT_BRANCH == 'origin/main' }
         }
       environment{
-          SNYK_TOKEN = credentials('snyktoken')
+          SNYK_TOKEN = credentials('SNYK')
        }
        steps{
          sh '''

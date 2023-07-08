@@ -35,17 +35,16 @@ pipeline {
         when {
           expression { GIT_BRANCH == 'origin/main' }
         }
-      environment{
-          SNYK = credentials('SNYK')
-       }
-       steps{
-         sh '''
-          echo "starting image scan ..."
-           docker run --rm -e $SNYK -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/app snyk/snyk:docker snyk test --docker ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG 
-            echo"scan ended"
-         '''
-        }
-    }
+   
+      steps {
+        echo 'Testing...'
+        snykSecurity(
+          snykInstallation: 'snyk',
+          snykTokenId: 'SNYK',
+          
+        )
+      }
+    
     
     stage('Run container based on builded image') {
       when {

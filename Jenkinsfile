@@ -57,7 +57,7 @@ pipeline {
            steps {
               script {
                 sh '''
-                  curl -I http://localhost:80 | grep -i "200"
+                  curl -I http://localhost | grep -i "200"
 
                 '''
               }

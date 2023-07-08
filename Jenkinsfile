@@ -6,7 +6,7 @@ pipeline {
        IMAGE_TAG = "v1"  
        CONTAINER_PORT = "8081"
        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-       HOST_PORT = "80"
+      APP_PORT= "80"
      }
 
   stages {

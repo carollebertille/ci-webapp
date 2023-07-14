@@ -20,7 +20,27 @@ pipeline {
              }
           }
       }
-     
+       
+      stage('SonarQube analysis') {
+        when {
+          expression { GIT_BRANCH == 'origin/dev' }
+         }
+            agent {
+                docker {
+                  image 'sonarsource/sonar-scanner-cli:4.8.0'
+                }
+               }
+               environment {
+        CI = 'true'
+        scannerHome='/opt/sonar-scanner'
+       }   
+            steps{
+                withSonarQubeEnv('Sonar') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+         }
+
     
       stage("Build docker images") {
         when {
@@ -43,23 +63,7 @@ pipeline {
              }
 	  }
      }
-    stage("scan docker images") {
-        when {
-          expression { GIT_BRANCH == 'origin/main' }
-        }
-      environment{
-          SNYK_TOKEN = credentials('SNYK')
-       }
-       steps{
-        script {
-         sh '''
-          echo "starting image scan ..."
-          SCAN_RESULT=$(docker run --rm -e $SNYK_TOKEN -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/app snyk/snyk:docker snyk test --docker ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG --json 
-          echo"scan ended"
-         '''
-        }
-       }
-    }
+    
       
  }
 }

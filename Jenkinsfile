@@ -23,7 +23,7 @@ pipeline {
        
       stage('SonarQube analysis') {
         when {
-          expression { GIT_BRANCH == 'origin/dev' }
+          expression { GIT_BRANCH == 'origin/main' }
          }
             agent {
                 docker {

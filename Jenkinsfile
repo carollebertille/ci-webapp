@@ -1,26 +1,12 @@
 pipeline {
     agent any 
-      environment {
-       DOCKERHUB_ID = "edennolan2021"
-       IMAGE_NAME = "helloworld"
-       IMAGE_TAG = "v1"  
-       CONTAINER_PORT = "8081"
-       DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-      APP_PORT= "80"
+      environment { 
+	registry = '792069373652.dkr.ecr.us-east-2.amazonaws.com/carolle'
+        dockerimage = '' 
      }
 
   stages {
-      stage('login to docker repository') {
-       when {
-          expression { GIT_BRANCH == 'origin/main' }
-        }
-          steps {
-             script {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-             }
-          }
-      }
-       
+      
       stage('SonarQube analysis') {
         when {
           expression { GIT_BRANCH == 'origin/main' }
@@ -40,31 +26,24 @@ pipeline {
                 }
             }
          }
-
-    
       stage("Build docker images") {
         when {
           expression { GIT_BRANCH == 'origin/main' }
         }
-        steps {
-            script {
-               sh ' docker build -t ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG . '
+        steps{
+                script {
+                    dockerImage = docker.build registry
+                }
             }
-        }
      }
-
-    stage('push docker image') {
-     when {
-          expression { GIT_BRANCH == 'origin/main' }
-        }
-          steps {
-             script {
-               sh 'docker push $DOCKERHUB_ID/$IMAGE_NAME:$IMAGE_TAG '
-             }
-	  }
-     }
-    
-      
+    stage('Pushing to ECR') {
+            steps{
+                script {
+                    sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 792069373652.dkr.ecr.us-east-1.amazonaws.com'
+                    sh 'docker push 792069373652.dkr.ecr.us-east-1.amazonaws.com/carolle'
+                }
+            }
+        }  
  }
 }
    

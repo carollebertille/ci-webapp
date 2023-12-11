@@ -11,9 +11,9 @@ pipeline {
         when {
           expression { GIT_BRANCH == 'origin/main' }
          }
-            agent {
+           agent {
                 docker {
-                  image 'edennolan2021/sonar-scanner-cli'
+                  image 'sonarsource/sonar-scanner-cli:4.8.0'
                 }
                }
                environment {
@@ -26,6 +26,7 @@ pipeline {
                 }
             }
          }
+        
       stage("Build docker images") {
         when {
           expression { GIT_BRANCH == 'origin/main' }
